@@ -1,0 +1,85 @@
+Given the root and two nodes in a Binary Tree. Find the lowest common ancestor(LCA) of the two nodes.
+
+The lowest common ancestor is the node with largest depth which is the ancestor of both nodes.
+
+
+xample
+For the following binary tree:
+
+  4
+ / \
+3   7
+   / \
+  5   6
+  
+  
+  LCA(3, 5) = 4
+
+LCA(5, 6) = 7
+
+LCA(6, 7) = 7
+
+
+
+/**
+ * 本代码由九章算法编辑提供。没有版权欢迎转发。
+ * - 九章算法致力于帮助更多中国人找到好的工作，教师团队均来自硅谷和国内的一线大公司在职工程师。
+ * - 现有的面试培训课程包括：九章算法班，系统设计班，BAT国内班
+ * - 更多详情请见官方网站：http://www.jiuzhang.com/
+ */
+
+Version 1: Traditional Method
+
+public class Solution {
+    private ArrayList<TreeNode> getPath2Root(TreeNode node) {
+        ArrayList<TreeNode> list = new ArrayList<TreeNode>();
+        while (node != null) {
+            list.add(node);
+            node = node.parent;
+        }
+        return list;
+    }
+    public TreeNode lowestCommonAncestor(TreeNode node1, TreeNode node2) {
+        ArrayList<TreeNode> list1 = getPath2Root(node1);
+        ArrayList<TreeNode> list2 = getPath2Root(node2);
+        
+        int i, j;
+        for (i = list1.size() - 1, j = list2.size() - 1; i >= 0 && j >= 0; i--, j--) {
+            if (list1.get(i) != list2.get(j)) {
+                return list1.get(i).parent;
+            }
+        }
+        return list1.get(i+1);
+    }
+}
+
+Version 2: Divide & Conquer
+
+public class Solution {
+    // 在root为根的二叉树中找A,B的LCA:
+    // 如果找到了就返回这个LCA
+    // 如果只碰到A，就返回A
+    // 如果只碰到B，就返回B
+    // 如果都没有，就返回null
+    public TreeNode getAncestor(TreeNode root, TreeNode node1, TreeNode node2) {
+        if (root == null || root == node1 || root == node2) {
+            return root;
+        }
+        
+        // Divide
+        TreeNode left = getAncestor(root.left, node1, node2);
+        TreeNode right = getAncestor(root.right, node1, node2);
+        
+        // Conquer
+        if (left != null && right != null) {
+            return root;
+        } 
+        if (left != null) {
+            return left;
+        }
+        if (right != null) {
+            return right;
+        }
+        return null;
+    }
+}
