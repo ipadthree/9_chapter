@@ -84,4 +84,3 @@ class Solution:
         single = max(left[1] + root.val, right[1] + root.val, 0)
 
         return maxpath, single
-
