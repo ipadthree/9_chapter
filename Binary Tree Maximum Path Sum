@@ -23,7 +23,7 @@ public class Solution {
     private class ResultType {
         // singlePath: 从root往下走到任意点的最大路径，这条路径可以不包含任何点
         // maxPath: 从树中任意到任意点的最大路径，这条路径至少包含一个点
-        int singlePath, maxPath; 
+        int singlePath, maxPath;
         ResultType(int singlePath, int maxPath) {
             this.singlePath = singlePath;
             this.maxPath = maxPath;
@@ -73,14 +73,15 @@ class Solution:
     def maxPathSum(self, root):
         maxSum, _ = self.maxPathHelper(root)
         return maxSum
-        
+
     def maxPathHelper(self, root):
         if root is None:
             return -sys.maxint, 0
-        
+
         left = self.maxPathHelper(root.left)
         right = self.maxPathHelper(root.right)
         maxpath = max(left[0], right[0], root.val + left[1] + right[1])
         single = max(left[1] + root.val, right[1] + root.val, 0)
-        
+
         return maxpath, single
+
